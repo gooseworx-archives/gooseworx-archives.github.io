@@ -638,7 +638,7 @@
     // Modal Maximizer View System
     window.maximizePost = function(post) {
         document.getElementById('modalContent').innerHTML = generatePostHTML(post, true);
-        document.getElementById('modalCommentsHeader').innerHTML = `💬 <b>${post.note_count.toLocaleString()}</b> Total Notes Archetype Logs`;
+        document.getElementById('modalCommentsHeader').innerHTML = `💬 <b>${post.note_count.toLocaleString()}</b> Total Comments`;
         
         const commentsList = document.getElementById('modalCommentsList');
         commentsList.innerHTML = '';
