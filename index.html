@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gooseworx Tumblr Archive</title>
+    <style>
+        :root {
+            --tumblr-navy: #120924;
+            --tumblr-purple: #7b2cbf;
+            --tumblr-purple-light: #9d4edd;
+            --tumblr-bg: #0a0414;
+            --card-bg: #1a0f30;
+            --text-main: #ffffff;
+            --text-muted: #a291b5;
+            --border-color: #2c1a4d;
+            --reblog-border: #7b2cbf;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tumblr-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Top Navigation Bar */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background-color: var(--tumblr-navy);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .nav-content {
+            width: 100%;
+            max-width: 640px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            box-sizing: border-box;
+        }
+
+        .tumblr-logo {
+            font-weight: 900;
+            font-size: 26px;
+            color: var(--text-main);
+            text-decoration: none;
+            letter-spacing: -1.5px;
+        }
+
+        /* Container & Layout */
+        .container {
+            width: 100%;
+            max-width: 640px;
+            padding: 20px 15px;
+            box-sizing: border-box;
+        }
+
+        /* Profile Header with Banner */
+        .profile-header {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .banner-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            background-color: #000;
+        }
+
+        .profile-main {
+            padding: 20px 24px 24px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--tumblr-navy);
+            background-color: #000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            margin-top: -68px;
+            z-index: 2;
+        }
+
+        .profile-info {
+            width: 100%;
+        }
+
+        .profile-info h1 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .profile-info p {
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-size: 14px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* Controls Block */
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 18px;
+            box-sizing: border-box;
+            background-color: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-bar:focus {
+            background-color: rgba(255,255,255,0.1);
+            border-color: var(--tumblr-purple-light);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .tab.active, .tab:hover {
+            background-color: var(--text-main);
+            color: var(--tumblr-navy);
+            border-color: var(--text-main);
+        }
+
+        /* Post Cards */
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .post-card:hover {
+            transform: scale(1.005);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .post-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            object-fit: cover;
+            background-color: #000;
+        }
+
+        .post-header-info {
+            flex: 1;
+        }
+
+        .blog-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .post-action {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .post-content {
+            padding: 18px 20px;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin: 12px 0;
+            display: block;
+        }
+
+        .reblog-thread {
+            border-left: 3px solid var(--reblog-border);
+            padding-left: 15px;
+            margin: 5px 0 15px 0;
+        }
+
+        .ask-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .ask-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .tags-container {
+            padding: 0 20px 15px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .tag:hover {
+            color: var(--tumblr-purple-light);
+        }
+
+        .post-footer {
+            background: rgba(0,0,0,0.15);
+            padding: 12px 20px;
+            border-top: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .view-original {
+            color: var(--tumblr-purple-light);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .notes-toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .notes-toggle-btn:hover {
+            color: var(--tumblr-purple-light);
+        }
+
+        /* --- MAXIMIZED VIEW MODAL --- */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(5, 2, 10, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 900px;
+            height: 85vh;
+            border-radius: 16px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        .modal-split-content {
+            flex: 1.2;
+            padding: 30px;
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .modal-split-comments {
+            flex: 0.8;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .modal-comments-header {
+            padding: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .modal-comments-list {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 13px;
+        }
+
+        .comment-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        .comment-author {
+            font-weight: 700;
+            color: var(--tumblr-purple-light);
+        }
+
+        .comment-text {
+            color: #e2d9ec;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1010;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal-btn:hover {
+            background: var(--tumblr-purple);
+        }
+
+        @media (max-width: 768px) {
+            .modal-box {
+                flex-direction: column;
+                height: 95vh;
+            }
+            .modal-split-content {
+                flex: 1;
+            }
+            .modal-split-comments {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav-bar">
+    <div class="nav-content">
+        <a href="#" class="tumblr-logo" style="color: var(--tumblr-purple-light)">t</a>
+        <span style="font-size: 14px; font-weight: bold; color: var(--text-muted);">goosearchives</span>
+    </div>
+</nav>
+
+<div class="container">
+    <header class="profile-header">
+        <img src="gooseworx_images/tumblr_1c12151db2c840c9bfc350ad49f22b97_916a4144_2048.jpg" class="banner-img" onerror="this.style.display='none'">
+        <div class="profile-main">
+            <img src="gooseworx_images/tumblr_e2ec0ec2f5ae4e392b794149dbee1494_e3ab9481_96.jpg" class="avatar" onerror="this.src='https://www.tumblr.com/assets/images/anonymous_avatar_96.png'">
+            <div class="profile-info">
+                <h1>gooseworx</h1>
+                <p>Aw yeah! Just drank 13 gallons of fishtank water, and am dodging all the cars on this busy freeway perfectly!</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="controls">
+        <input type="text" id="search" class="search-bar" placeholder="Search gooseworx posts...">
+        <div class="filter-tabs">
+            <div class="tab active" data-filter="all">All</div>
+            <div class="tab" data-filter="answer">Asks</div>
+            <div class="tab" data-filter="reblog">Reblogs</div>
+            <div class="tab" data-filter="text">Text</div>
+        </div>
+    </div>
+
+    <main id="posts" class="post-list">
+        <div style="text-align: center; color: var(--text-muted); padding: 40px;">Initializing archive feed...</div>
+    </main>
+</div>
+
+<div class="modal-backdrop" id="postModal" onclick="closeModal(event)">
+    <button class="close-modal-btn" onclick="closeModal(event, true)">&times;</button>
+    <div class="modal-box" id="modalBox" onclick="event.stopPropagation()">
+        <div class="modal-split-content" id="modalContent"></div>
+        <div class="modal-split-comments">
+            <div class="modal-comments-header" id="modalCommentsHeader">Interactions Tracking Log</div>
+            <div class="modal-comments-list" id="modalCommentsList"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let archiveData = [];
+    let currentFilter = 'all';
+    let searchQuery = '';
+    const GOOSE_AVATAR = "gooseworx_images/tumblr_e2ec0ec2f5ae4e392b794149dbee1494_e3ab9481_96.png";
+    const ANON_AVATAR = "https://www.tumblr.com/assets/images/anonymous_avatar_96.png";
+
+    async function loadArchive() {
+        try {
+            const response = await fetch('goosearchives.json');
+            archiveData = await response.json();
+            renderPosts();
+        } catch (error) {
+            document.getElementById('posts').innerHTML = `<div style="color: #ff6b6b; padding: 20px;">Error reading JSON source document. Ensure python server is running.</div>`;
+        }
+    }
+
+    // Complete Sanitization: Removes blockquotes, matching usernames, and inline duplicate images
+    function sanitizeTumblrReblog(htmlString, username) {
+        if (!htmlString) return "";
+        
+        const sandbox = document.createElement('div');
+        sandbox.innerHTML = htmlString;
+        
+        // 1. Hard purge all internal image tags inside reblog text to rely cleanly on the native photo array
+        const internalImgs = sandbox.querySelectorAll('img');
+        internalImgs.forEach(img => img.remove());
+
+        // 2. Destructure blockquotes completely to prevent layout bugs
+        const blockquotes = sandbox.querySelectorAll('blockquote');
+        blockquotes.forEach(bq => {
+            const documentFragment = document.createDocumentFragment();
+            while (bq.firstChild) {
+                documentFragment.appendChild(bq.firstChild);
+            }
+            bq.parentNode.replaceChild(documentFragment, bq);
+        });
+
+        if (username) {
+            const lowerUsername = username.toLowerCase();
+            const paragraphs = sandbox.querySelectorAll('p');
+            
+            for (let p of paragraphs) {
+                const textContent = p.textContent.trim().toLowerCase();
+                if (textContent === `${lowerUsername}:` || textContent === lowerUsername) {
+                    p.remove();
+                    continue;
+                }
+                const nestedLink = p.querySelector('a');
+                if (nestedLink && nestedLink.textContent.trim().toLowerCase() === lowerUsername) {
+                    p.remove();
+                }
+            }
+        }
+        
+        return sandbox.innerHTML.trim();
+    }
+
+    function generatePostHTML(post, isExpandedView = false) {
+        let authorName = post.reblogged_from_name || "gooseworx";
+        let rawBody = post.body || post.caption || '';
+        let cleanedBody = sanitizeTumblrReblog(rawBody, post.reblogged_from_name);
+
+        let html = `
+            <div class="post-header">
+                <img src="${post.reblogged_from_name ? ANON_AVATAR : GOOSE_AVATAR}" class="post-avatar" onerror="this.src='${ANON_AVATAR}'">
+                <div class="post-header-info">
+                    <span class="blog-name">${authorName}</span>
+                    ${post.reblogged_from_name ? '<div class="post-action">reblogged by <b>gooseworx</b></div>' : ''}
+                </div>
+            </div>
+            <div class="post-content">`;
+
+        if (post.type === 'answer') {
+            html += `
+                <div class="ask-container">
+                    <div class="ask-header"><img src="${ANON_AVATAR}" style="width:16px; height:16px; border-radius:3px;"> ${post.asking_name || "anonymous"} asked:</div>
+                    <div class="ask-text">${post.question}</div>
+                </div>
+                <div class="answer-text">${post.answer}</div>`;
+        } else if (post.reblogged_from_name) {
+            html += `
+                <div class="reblog-thread">
+                    <div class="reblog-original-content">${cleanedBody}</div>
+                </div>
+                ${post.answer ? `<div class="reblog-comment">${post.answer}</div>` : ''}`;
+        } else {
+            html += `${cleanedBody}`;
+        }
+
+        if (post.local_images) {
+            post.local_images.forEach(img => html += `<img src="${img.local_path}" loading="lazy" onerror="this.style.display='none'">`);
+        }
+        html += `</div>`;
+
+        if (post.tags && post.tags.length > 0) {
+            html += '<div class="tags-container">' + post.tags.map(t => `<span class="tag">#${t}</span>`).join(' ') + '</div>';
+        }
+
+        if (!isExpandedView) {
+            html += `
+                <div class="post-footer">
+                    <button class="notes-toggle-btn">💬 <b>${post.note_count.toLocaleString()}</b> notes</button>
+                    <a href="${post.post_url}" target="_blank" class="view-original" onclick="event.stopPropagation()">↗</a>
+                </div>`;
+        }
+        return html;
+    }
+
+    function renderPosts() {
+        const target = document.getElementById('posts');
+        target.innerHTML = '';
+        
+        const filtered = archiveData.filter(post => {
+            if (currentFilter === 'reblog') {
+                if (!post.reblogged_from_name) return false;
+            } else if (currentFilter !== 'all' && post.type !== currentFilter) {
+                return false;
+            }
+
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase();
+                return (post.body || '').toLowerCase().includes(query) || (post.caption || '').toLowerCase().includes(query) || (post.question || '').toLowerCase().includes(query) || (post.answer || '').toLowerCase().includes(query) || post.tags.some(t => t.toLowerCase().includes(query));
+            }
+            return true;
+        });
+
+        if (filtered.length === 0) {
+            target.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 40px;">No matching results found.</div>`;
+            return;
+        }
+
+        filtered.forEach(post => {
+            const card = document.createElement('article');
+            card.className = 'post-card';
+            card.innerHTML = generatePostHTML(post, false);
+            card.addEventListener('click', () => maximizePost(post));
+            target.appendChild(card);
+        });
+    }
+
+    // Modal Maximizer View System
+    window.maximizePost = function(post) {
+        document.getElementById('modalContent').innerHTML = generatePostHTML(post, true);
+        document.getElementById('modalCommentsHeader').innerHTML = `💬 <b>${post.note_count.toLocaleString()}</b> Total Notes Archetype Logs`;
+        
+        const commentsList = document.getElementById('modalCommentsList');
+        commentsList.innerHTML = '';
+
+        if (!post.interactions || post.interactions.length === 0) {
+            commentsList.innerHTML = '<div style="color:var(--text-muted); font-size:13px; text-align:center; padding-top:30px;">No interaction notes recorded.</div>';
+        } else {
+            post.interactions.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'comment-item';
+                
+                let commentText = "";
+                if (item.type === 'like') commentText = `<span style="color:var(--text-muted)">liked this post</span>`;
+                else if (item.type === 'reblog') commentText = `<span style="color:var(--text-muted)">reblogged this</span>${item.added_text ? `<div style="color:#ffffff; margin-top:4px;">"${item.added_text}"</div>` : ''}`;
+                else if (item.type === 'reply') commentText = `<div class="comment-text">${item.reply_text}</div>`;
+
+                row.innerHTML = `
+                    <img src="${ANON_AVATAR}" class="comment-avatar">
+                    <div>
+                        <span class="comment-author">${item.blog_name}</span>
+                        <div>${commentText}</div>
+                    </div>
+                `;
+                commentsList.appendChild(row);
+            });
+        }
+        
+        document.getElementById('postModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    window.closeModal = function(event, forced = false) {
+        if (forced || event.target.classList.contains('modal-backdrop')) {
+            document.getElementById('postModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    document.getElementById('search').addEventListener('input', (e) => { searchQuery = e.target.value; renderPosts(); });
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            e.target.classList.add('active');
+            currentFilter = e.target.getAttribute('data-filter');
+            renderPosts();
+        });
+    });
+    window.addEventListener('DOMContentLoaded', loadArchive);
+</script>
+</body>
+</html>
