@@ -1,0 +1,17 @@
+GOOSEWORX-ARCHIVES-LIST-FORMAT-1.0
+--
+start
+-name "Bluesky"
+-relative-url "bsky/index.html"
+-icon "icons/bsky.jpg"
+end
+--
+--
+start
+-name "Tumblr"
+-relative-url "tumblr/index.html"
+-icon "icons/tumblr.png"
+end
+--
+-file-end
+--
