@@ -28,4 +28,6 @@ Reddit: https://gooseworx-archives.github.io/reddit
 
 Instagram (Fake): https://gooseworx-archives.github.io/ig
 
+X: https://gooseworx-archives.github.io/x
+
 Github: [You Are Already Here!](https://github.com/gooseworx-archives/gooseworx-archives.github.io)
