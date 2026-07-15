@@ -4,7 +4,7 @@ Archive of Gooseworx social media.
 
 ## To-Do:
 
-✅ ~~Tumblr~~ - Complete
+✅ ~~Tumblr~~ - AFAIK, Complete
 
 ½ Bluesky - All videos are currently placeholders
 
