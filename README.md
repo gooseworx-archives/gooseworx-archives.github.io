@@ -1,3 +1,13 @@
 ## Gooseworx Archive
 
-Archive of Gooseworx's Tumblr as of Monday, July 13th, 2026.
+Archive of Gooseworx social media.
+
+# To-Do:
+
+✅ ~~Tumblr~~ - Complete
+
+½ Bluesky - All videos are currently placeholders
+
+❌ YouTube - Incomplete
+
+？ Reddit - Unknown if possible
