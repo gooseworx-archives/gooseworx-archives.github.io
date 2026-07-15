@@ -8,6 +8,6 @@ Archive of Gooseworx social media.
 
 ½ Bluesky - All videos are currently placeholders
 
-❌ YouTube - Incomplete
+❌ YouTube - Incomplete (Not Started)
 
-？ Reddit - Unknown if possible
+？ Reddit - Unknown if possible (Not Started)
