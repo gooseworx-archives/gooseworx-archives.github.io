@@ -1,0 +1,45 @@
+GOOSEWORX-ARCHIVES-LIST-FORMAT-1.0
+--
+start
+-name "Bluesky"
+-relative-url "bsky/index.html"
+-icon "icons/bsky.jpg"
+end
+--
+--
+start
+-name "Tumblr"
+-relative-url "tumblr/index.html"
+-icon "icons/tumblr.png"
+end
+--
+--
+start
+-name "Instagram (Fake)"
+-relative-url "ig/index.html"
+-icon "icons/ig.svg"
+end
+--
+--
+start
+-name "X"
+-relative-url "x"
+-icon "icons/x.png"
+end
+--
+--
+start
+-name "YouTube"
+-relative-url "yt"
+-icon "icons/yt.png"
+end
+--
+--
+start
+-name "Reddit"
+-relative-url "reddit"
+-icon "icons/reddit.svg"
+end
+--
+-file-end
+--
